@@ -15,12 +15,12 @@ pipeline{
        }
         }
     stage('adding-maven'){
-      steps{
+      steps {
        dir('/mnt/project')
        sh 'rm -rf /.m2/repository'
        sh 'mvn clean install'
-       stash includes: 'target/*.war' 'warfile'
-      }
+       stash name: 'warfile', includes: 'target/*.war'
+       }
     }
     stage('adding-path-of-database'){
      steps{
@@ -35,7 +35,7 @@ pipeline{
       label 'slave-1'
              }
       steps{
-        unstash 'warfile'
+        unstash name: 'warfile'
         sh '''
         cp /mnt/project/target/*.war /mnt/apache-tomcat-10.1.42/webapps
         chmod -R 777 /mnt/apache-tomcat-10.1.42
