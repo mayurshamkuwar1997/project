@@ -5,10 +5,10 @@ pipeline{
   }
   
   stages{
-    agent {
+    stage('clonning-git-repo'){
+       agent {
     label 'built-in'
           }
-    stage('clonning-git-repo'){
        steps{
          dir('/mnt/project'){
       checkout scm
