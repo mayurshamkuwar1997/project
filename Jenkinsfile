@@ -29,7 +29,7 @@ pipeline{
          DB_PASS = '123456'
        }
      steps{
-       dir('/mnt/project/src/main/webapp')
+       dir('/mnt/project/src/main/webapp') {
        sh '''
         sed -i 's|DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");|DriverManager.getConnection("DB_URL_PLACEHOLDER", "DB_USER_PLACEHOLDER", "DB_PASS_PLACEHOLDER");|' userRegistration.jsp
         
@@ -38,6 +38,7 @@ pipeline{
         sed -i "s|DB_PASS_PLACEHOLDER|${DB_PASS}|" userRegistration.jsp
         '''
           }
+     }
     }
     
    stage('adding-maven'){
