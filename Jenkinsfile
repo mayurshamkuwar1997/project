@@ -26,7 +26,7 @@ pipeline{
     environment {
          DB_URL = 'jdbc:mysql://database-1.cti0iqs4ugbm.ap-south-1.rds.amazonaws.com:3306/loginwebapp'
          DB_USER = 'admin'
-         DB_PASS = '123456'
+         DB_PASS = 'mayur1997'
        }
      steps{
        dir('/mnt/project/src/main/webapp') {
