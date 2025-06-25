@@ -38,36 +38,32 @@ pipeline{
         sed -i "s|DB_PASS_PLACEHOLDER|${DB_PASS}|" userRegistration.jsp
         '''
           }
-     }
-    }
-    
-   stage('adding-maven'){
-         agent {
-           label 'built-in'
-          }
-      steps {
-       dir('/mnt/project') {
-       sh 'rm -rf /root/.m2/repository'
-       sh 'mvn clean install'
-       stash name: 'warfile', includes: 'target/*.war'
-       }
-       }
-    }
-    
-    stage('build-war') {
-       agent {
-      label 'slave-1'
-             }
-      steps{
-        unstash name: 'warfile'
-        sh 'sudo cp target/*.war /mnt/apache-tomcat-10.1.42/webapps'
-        sh '''
-        sudo chmod -R 777 /mnt/apache-tomcat-10.1.42
-        cd /mnt/apache-tomcat-10.1.42/bin
-        sudo ./startup.sh
-        '''
       }
     }
+
+ stage('build with maven') {
+    agent {
+      label 'built-in'
+    }
+    steps {
+      dir('/mnt/project-2') {
+        sh 'rm -rf /root/.m2/repository'
+        sh 'mvn clean install'
+        stash includes: 'target/*.war', name: 'warfile'
+      }
+    }
+  }
+
+    stage('creating-ntwork')
+     agent{
+       label 'uat'
+     }
+      steps{
+        sh 'sudo docker network net-1 --driver=bridge'
+        
+      }
+    }
+    
     
   }
 }
