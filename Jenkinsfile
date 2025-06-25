@@ -33,10 +33,19 @@ pipeline{
       agent {
     label 'built-in'
           }
+    environment {
+         DB_URL = 'jdbc:mysql://database-1.cti0iqs4ugbm.ap-south-1.rds.amazonaws.com:3306/loginwebapp'
+         DB_USER = 'admin'
+         DB_PASS = '123456'
+       }
      steps{
        dir('/mnt/project/src/main/webapp')
        sh '''
-        sed -i 's|DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root")|DriverManager.getConnection("jdbc:mysql://database-1.cti0iqs4ugbm.ap-south-1.rds.amazonaws.com:3306/loginwebapp", "admin", "123456")|g' userRegistration.jsp
+        sed -i 's|DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");|DriverManager.getConnection("DB_URL_PLACEHOLDER", "DB_USER_PLACEHOLDER", "DB_PASS_PLACEHOLDER");|' userRegistration.jsp
+
+        sed -i "s|DB_URL_PLACEHOLDER|${DB_URL}|" userRegistration.jsp
+        sed -i "s|DB_USER_PLACEHOLDER|${DB_USER}|" userRegistration.jsp
+        sed -i "s|DB_PASS_PLACEHOLDER|${DB_PASS}|" userRegistration.jsp
         '''
           }
     }
