@@ -32,7 +32,7 @@ pipeline{
        dir('/mnt/project/src/main/webapp')
        sh '''
         sed -i 's|DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "root");|DriverManager.getConnection("DB_URL_PLACEHOLDER", "DB_USER_PLACEHOLDER", "DB_PASS_PLACEHOLDER");|' userRegistration.jsp
-
+        
         sed -i "s|DB_URL_PLACEHOLDER|${DB_URL}|" userRegistration.jsp
         sed -i "s|DB_USER_PLACEHOLDER|${DB_USER}|" userRegistration.jsp
         sed -i "s|DB_PASS_PLACEHOLDER|${DB_PASS}|" userRegistration.jsp
@@ -46,7 +46,7 @@ pipeline{
           }
       steps {
        dir('/mnt/project') {
-       sh 'rm -rf /.m2/repository'
+       sh 'rm -rf /root/.m2/repository'
        sh 'mvn clean install'
        stash name: 'warfile', includes: 'target/*.war'
        }
@@ -59,11 +59,11 @@ pipeline{
              }
       steps{
         unstash name: 'warfile'
+        sh 'sudo cp target/*.war /mnt/apache-tomcat-10.1.42/webapps'
         sh '''
-        cp /mnt/project/target/*.war /mnt/apache-tomcat-10.1.42/webapps
-        chmod -R 777 /mnt/apache-tomcat-10.1.42
+        sudo chmod -R 777 /mnt/apache-tomcat-10.1.42
         cd /mnt/apache-tomcat-10.1.42/bin
-        ./startup.sh
+        sudo ./startup.sh
         '''
       }
     }
