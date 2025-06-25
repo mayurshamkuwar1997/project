@@ -1,6 +1,6 @@
 pipeline{
   agent none 
-  tools{
+  tools {
     maven 'apache-maven-3.9.10'
   }
   options {
@@ -9,26 +9,16 @@ pipeline{
   stages{
     stage('clonning-git-repo'){
        agent {
-    label 'built-in'
+         label 'built-in'
           }
        steps{
          dir('/mnt/project'){
-      checkout scm
+           sh 'rm -rf *'
+           checkout scm
             }
-       }
-        }
-    stage('adding-maven'){
-         agent {
-           label 'built-in'
-          }
-      steps {
-       dir('/mnt/project') {
-       sh 'rm -rf /.m2/repository'
-       sh 'mvn clean install'
-       stash name: 'warfile', includes: 'target/*.war'
-       }
-       }
-    }
+         }
+      }
+    
     stage('adding-path-of-database'){
       agent {
     label 'built-in'
@@ -49,7 +39,20 @@ pipeline{
         '''
           }
     }
-   
+    
+   stage('adding-maven'){
+         agent {
+           label 'built-in'
+          }
+      steps {
+       dir('/mnt/project') {
+       sh 'rm -rf /.m2/repository'
+       sh 'mvn clean install'
+       stash name: 'warfile', includes: 'target/*.war'
+       }
+       }
+    }
+    
     stage('build-war') {
        agent {
       label 'slave-1'
@@ -62,8 +65,8 @@ pipeline{
         cd /mnt/apache-tomcat-10.1.42/bin
         ./startup.sh
         '''
-        
       }
     }
+    
   }
 }
