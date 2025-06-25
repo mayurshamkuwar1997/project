@@ -3,10 +3,11 @@ pipeline{
   tools{
     maven 'apache-maven-3.9.10'
   }
-  agent {
-    label 'built-in'
-  }
+  
   stages{
+    agent {
+    label 'built-in'
+          }
     stage('clonning-git-repo'){
        steps{
          dir('/mnt/project'){
