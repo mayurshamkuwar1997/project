@@ -19,7 +19,7 @@ pipeline{
        dir('/mnt/project')
        sh 'rm -rf /.m2/repository'
        sh 'mvn clean install'
-       stash 'target/*.war' 'warfile'
+       stash includes: 'target/*.war' 'warfile'
       }
     }
     stage('adding-path-of-database'){
@@ -29,10 +29,11 @@ pipeline{
         '''
           }
     }
-    agent {
-      label 'slave-1'
-    }
+   
     stage('build-war') {
+       agent {
+      label 'slave-1'
+             }
       steps{
         unstash 'warfile'
         sh '''
