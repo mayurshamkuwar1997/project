@@ -17,10 +17,11 @@ pipeline{
         }
     stage('adding-maven'){
       steps {
-       dir('/mnt/project')
+       dir('/mnt/project') {
        sh 'rm -rf /.m2/repository'
        sh 'mvn clean install'
        stash name: 'warfile', includes: 'target/*.war'
+       }
        }
     }
     stage('adding-path-of-database'){
