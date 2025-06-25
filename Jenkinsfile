@@ -46,13 +46,14 @@ pipeline{
       steps{
         dir('/mnt/project/target'){
         unstash name: 'warfile'
+        }
         sh '''
         cp /mnt/project/target/*.war /mnt/apache-tomcat-10.1.42/webapps
         chmod -R 777 /mnt/apache-tomcat-10.1.42
         cd /mnt/apache-tomcat-10.1.42/bin
         ./startup.sh
         '''
-        }
+        
       }
     }
   }
