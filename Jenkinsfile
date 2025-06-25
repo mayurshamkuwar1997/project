@@ -32,6 +32,7 @@ pipeline{
     label 'built-in'
           }
      steps{
+       dir('/mnt/project')
        sh '''
         sed -i 's|"jdbc:mysql://localhost:3306/test", "root", "root"|"jdbc:mysql://database-1.cti0iqs4ugbm.ap-south-1.rds.amazonaws.com:3306/loginwebapp", "admin", "123456"|g' userRegistration.jsp
         '''
