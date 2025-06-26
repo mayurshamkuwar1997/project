@@ -15,6 +15,8 @@ pipeline{
          dir('/mnt/project'){
            sh 'rm -rf *'
            checkout scm
+           stash includes: 'Dockerfile' name: 'dockerfile'
+           stash includes: 'init.sql' name: 'initsql'
             }
          }
       }
@@ -54,16 +56,36 @@ pipeline{
     }
   }
 
-    stage('creating-ntwork')
+    stage('docker-serverstart-&&-creating-custom-network') {
      agent{
-       label 'uat'
-     }
+       label 'slave-2'
+          }
       steps{
+        sh 'sudo systemctl enable docker'
         sh 'sudo docker network net-1 --driver=bridge'
-        
+           }
+    }
+
+    stage('making-container-with-network-net-1'){
+      agent{ label 'slave-2'}
+      steps{
+        unstash 'dockerfile'
+        unstash 'initsql'
+        sh 'sudo chmod -R 777 /mnt/slave-2/workspace/docker-container-tomcat-mysql-database-with-network/Dockerfile'
+        sh 'sudo chmod -R 777 /mnt/slave-2/workspace/docker-container-tomcat-mysql-database-with-network/init.sql'
+        sh 'sudo docker build -t mysql-container'
+        sh 'sudo docker run -dp 3306:3306 --network net-1 --name sql-container mysql-container'
       }
     }
-    
+
+    stage('making-tomcat-server-&&-deploying-war-file'){
+      agent { label 'slave-2'}
+      steps{
+        sh 'sudo docker run -dp 8080:8080 --network net-1 --name tomcat-container tomcat:10'
+        unstash 'warfile'
+        sh 'sudo docker cp /target/*.war tomcat-container:/mnt/apache-tomcat-10.1.42/webapps'
+      }
+    }
     
   }
 }
