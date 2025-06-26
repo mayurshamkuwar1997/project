@@ -73,7 +73,7 @@ pipeline{
         unstash 'initsql'
         sh 'sudo chmod -R 777 /mnt/slave-2/workspace/docker-container-tomcat-mysql-database-with-network/Dockerfile'
         sh 'sudo chmod -R 777 /mnt/slave-2/workspace/docker-container-tomcat-mysql-database-with-network/init.sql'
-        sh 'sudo docker build -t mysql-container'
+        sh 'sudo docker build -t mysql-container .'
         sh 'sudo docker run -dp 3306:3306 --network net-1 --name sql-container mysql-container'
       }
     }
