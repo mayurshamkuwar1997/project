@@ -15,8 +15,8 @@ pipeline{
          dir('/mnt/project'){
            sh 'rm -rf *'
            checkout scm
-           stash includes: 'Dockerfile' name: 'dockerfile'
-           stash includes: 'init.sql' name: 'initsql'
+           stash includes: 'Dockerfile', name: 'dockerfile'
+           stash includes: 'init.sql', name: 'initsql'
             }
          }
       }
