@@ -62,7 +62,7 @@ pipeline{
           }
       steps{
         sh 'sudo systemctl enable docker'
-        sh 'sudo docker network net-1 --driver=bridge'
+        sh 'sudo docker network create net-1 --driver=bridge'
            }
     }
 
