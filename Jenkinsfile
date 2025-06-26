@@ -28,7 +28,7 @@ pipeline{
     environment {
          DB_URL = 'jdbc:mysql://sql-container:3306/loginwebapp'
          DB_USER = 'admin'
-         DB_PASS = 'mayur1997'
+         DB_PASS = '123456'
        }
      steps{
        dir('/mnt/project/src/main/webapp') {
