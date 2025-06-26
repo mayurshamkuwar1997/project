@@ -26,7 +26,7 @@ pipeline{
     label 'built-in'
           }
     environment {
-         DB_URL = 'jdbc:mysql://database-1.cti0iqs4ugbm.ap-south-1.rds.amazonaws.com:3306/loginwebapp'
+         DB_URL = 'jdbc:mysql://sql-container:3306/loginwebapp'
          DB_USER = 'admin'
          DB_PASS = 'mayur1997'
        }
