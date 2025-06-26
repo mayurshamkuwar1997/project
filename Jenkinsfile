@@ -83,7 +83,7 @@ pipeline{
       steps{
         sh 'sudo docker run -dp 8080:8080 --network net-1 --name tomcat-container tomcat:10'
         unstash 'warfile'
-        sh 'sudo docker cp target/*.war tomcat-container:/mnt/apache-tomcat-10.1.42/webapps'
+        sh 'sudo docker cp target/*.war tomcat-container:/usr/local/tomcat/webapps'
       }
     }
     
