@@ -43,7 +43,7 @@ pipeline{
            }
      steps {
        sh 'scp -r /mnt/wars/*.war mayur@${devip}:/mnt/wars'
-       sh 'scp -r /mnt/wars/*.war mayur@${qavip}:/mnt/wars'
+       sh 'scp -r /mnt/wars/*.war mayur@${qaip}:/mnt/wars'
      }
    }
 
