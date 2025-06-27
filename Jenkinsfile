@@ -12,10 +12,10 @@ pipeline{
   }
  stages{
    stage('clonning-git') {
-     steps{
-       agent { 
+     agent { 
          label 'built-in'
              }
+     steps {
        dir('/mnt/project') {
          sh 'rm -rf *'
          checkout scm
@@ -24,10 +24,10 @@ pipeline{
         }
 
    stage('compile-maven') {
-     steps{
-       agent {
+      agent {
          label 'built-in'
        }
+     steps{
        dir('/mnt/project') {
          sh 'rm -rf *'
          sh 'mvn clean install'
@@ -40,7 +40,7 @@ pipeline{
    stage('copying-war-file-on-dev-and-qa-machines') {
      agent {
        label 'built-in'
-     }
+           }
      steps {
        sh 'scp -r /mnt/wars/*.war mayur@${devip}:/mnt/wars'
        sh 'scp -r /mnt/wars/*.war mayur@${qavip}:/mnt/wars'
