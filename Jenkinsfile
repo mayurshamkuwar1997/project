@@ -42,8 +42,8 @@ pipeline{
        label 'built-in'
            }
      steps {
-       sh 'scp -r /mnt/wars/*.war mayur@${devip}:/mnt/wars'
-       sh 'scp -r /mnt/wars/*.war mayur@${qavip}:/mnt/wars'
+       sh 'scp  /mnt/wars/*.war mayur@${devip}:/mnt/wars'
+       sh 'scp  /mnt/wars/*.war mayur@${qavip}:/mnt/wars'
      }
    }
 
