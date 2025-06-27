@@ -29,7 +29,7 @@ pipeline{
        }
      steps{
        dir('/mnt/project') {
-         sh 'rm -rf *'
+         sh 'rm -rf /root/.m2/repository'
          sh 'mvn clean install'
          sh 'sudo rm -rf /mnt/wars/*'
          sh 'cp -r target/*.war /mnt/wars'
